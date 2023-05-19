@@ -162,4 +162,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-
+# Development
+images/
+test-images/
+*.pdf
