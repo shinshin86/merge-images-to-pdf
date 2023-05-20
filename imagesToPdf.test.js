@@ -2,6 +2,8 @@ const fs = require('fs');
 const mockFs = require('mock-fs');
 const imagesToPdf = require('./imagesToPdf');
 
+const imageContent = fs.readFileSync('./test-images/test-image.jpg');
+
 describe('imagesToPdf', () => {
   beforeEach(() => {
     const pdfKitFont = fs.readFileSync('./node_modules/pdfkit/js/data/Helvetica.afm');
@@ -10,10 +12,10 @@ describe('imagesToPdf', () => {
       './node_modules/pdfkit/js/data/': {
         'Helvetica.afm': pdfKitFont
       },
-        'images': {
-            'image1.jpg': 'dummy content',
-            'image2.png': 'dummy content',
-            'image3.jpeg': 'dummy content'
+        'test-images': {
+            'image1.jpg': imageContent,
+            'image2.png': imageContent,
+            'image3.jpeg': imageContent
         }
     })
   })
@@ -25,12 +27,8 @@ describe('imagesToPdf', () => {
   it('should create a PDF from images', async () => {
     const imageDir = 'test-images';
     const outputFileName = 'test-output.pdf';
-    imagesToPdf(imageDir, outputFileName);
-
-    setTimeout(() => {
-      expect(fs.existsSync(outputFileName)).toBeTruthy();
-      done();
-    }, 500);
+    await imagesToPdf(imageDir, outputFileName);
+    expect(fs.existsSync(outputFileName)).toBeTruthy();
   })
 })
 
